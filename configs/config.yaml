@@ -1,0 +1,51 @@
+project_name: "DPR"
+seed: 42
+device: "cuda"
+
+loader:
+  train:
+    file: "data/train.jsonl"
+    seed: ${seed}
+    batch_size: 256
+    buffer_size: 10000
+    shuffle: true
+    num_workers: 1
+  val:
+    file: "data/valid.jsonl"
+    seed: ${seed}
+    batch_size: 256
+    buffer_size: 3000
+    shuffle: false
+    num_workers: 1
+  test:
+    file: "data/test.jsonl"
+    seed: ${seed}
+    batch_size: 256
+    buffer_size: 3000
+    shuffle: false
+    num_workers: 1
+
+train:
+  epochs: 30
+  scheduler_config:
+      type: "StepLR"
+      params:
+          step_size: 10
+          gamma: 0.5
+
+  optimizer_config:
+      type: "AdamW"
+      params:
+          lr: 0.00001
+          weight_decay: 0.001
+  patience: 5
+  early_stopping: true
+
+model:
+  model_name: "bert-base-uncased"
+  tokenizer_name: "bert-base-uncased"
+  drop_out: 0.1
+  Q_encoder:
+    pretrained_model_name: ${model.model_name}
+  P_encoder:
+    pretrained_model_name: ${model.model_name}
