@@ -6,4 +6,6 @@
 ```bash
 #run
 python main.py --config-name config hydra/job_logging=default
+#background 실행
+nohup python -u main.py --config-name config hydra/job_logging=default &
 ```
